@@ -26,6 +26,11 @@ class Game:
         self.num_opened = 0
         self.cases = []
         self.offers = []
+        self.offer = None
+        self.offer_round = None
+        self.finished = False
+        self.result = None
+        self.result_type = None
 
 class Case:
     def __init__(self):
@@ -52,7 +57,7 @@ def create_new_game():
 
 
 def calculate_offer(game: Game):
-    if game.num_opened not in [5, 9, 12, 14, 15, 16, 17, 18, 19]:
+    if game.num_opened not in [5, 9, 12, 14, 15, 16, 17, 18]:
         return None
 
     amounts_in_game = []
@@ -77,8 +82,6 @@ def calculate_offer(game: Game):
             return int(average)
     elif game.num_opened == 18:
             return int(average)
-    elif game.num_opened == 19:
-            return int(average)
     return int(average)
 
 
@@ -92,22 +95,39 @@ def index():
     if request.method == 'POST':
         if request.form.get('action') == 'new_game':
             game = create_new_game()
-        else:
-            case_num = request.form.get('case_number', type=int)
-            if case_num is not None:
-                for case in game.cases:
-                    if case.number == case_num:
-                        if game.player_case is None:
-                            game.player_case = case
-                            case.is_player_case = True
-                        elif not case.is_player_case and not case.opened:
-                            case.opened = True
-                            game.num_opened += 1
-                        break
+        elif not game.finished:
+            action = request.form.get('action')
+            if action == 'accept_offer' and game.offer is not None:
+                game.finished = True
+                game.result = game.offer
+                game.result_type = 'offer'
+                game.offer = None
+            elif action == 'decline_offer' and game.offer is not None:
+                game.offer = None
+                game.offer_round = game.num_opened
+            elif action is None and game.offer is None:
+                case_num = request.form.get('case_number', type=int)
+                if case_num is not None:
+                    for case in game.cases:
+                        if case.number == case_num:
+                            if game.player_case is None:
+                                game.player_case = case
+                                case.is_player_case = True
+                            elif not case.is_player_case and not case.opened:
+                                case.opened = True
+                                game.num_opened += 1
+                                if game.num_opened == 19 and game.player_case is not None:
+                                    game.player_case.opened = True
+                                    game.num_opened += 1
+                                    game.finished = True
+                                    game.result = game.player_case.amount
+                                    game.result_type = 'case'
+                            break
         return redirect(url_for('index'))
     
-    offer = calculate_offer(game)
-    return render_template('index.html', game=game, offer=offer, amounts=AMOUNTS)
+    if not game.finished and game.offer is None and game.offer_round != game.num_opened:
+        game.offer = calculate_offer(game)
+    return render_template('index.html', game=game, offer=game.offer, amounts=AMOUNTS)
 
 
 if __name__ == '__main__':
