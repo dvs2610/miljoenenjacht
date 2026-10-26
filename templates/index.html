@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="game-page">
+        <header class="topbar">
+            <a class="brand" href="{{ url_for('index') }}" aria-label="Miljoenenjacht start">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span>Miljoenen<span class="brand-accent">jacht</span></span>
+            </a>
+            <form method="post">
+                <button class="new-game-button" type="submit" name="action" value="new_game">
+                    <span aria-hidden="true">↻</span> Nieuw spel
+                </button>
+            </form>
+        </header>
+
+        <div class="game-layout">
+            <section class="board-panel" aria-labelledby="board-title">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">De koffers</p>
+                        <h2 id="board-title">{% if game.finished %}Spel afgelopen{% else %}Kies je volgende koffer{% endif %}</h2>
+                    </div>
+                    <span class="round-count">{{ game.num_opened }} <span>/ 20 geopend</span></span>
+                </div>
+
+                <div class="case-grid">
+                    {% for case in game.cases %}
+                        {% if case.is_player_case %}
+                            <div class="case picked" aria-label="Jouw koffer, nummer {{ case.number }}{% if game.finished %}, bevat € {{ case.amount|format_number }}{% endif %}">
+                                <span class="case-number">{% if game.finished %}€ {{ case.amount|format_number }}{% else %}{{ "%02d"|format(case.number) }}{% endif %}</span>
+                                <span class="case-caption">{% if game.finished and game.result_type == 'case' %}Jouw prijs{% elif game.finished %}In jouw koffer{% else %}Jouw koffer{% endif %}</span>
+                            </div>
+                        {% elif case.opened %}
+                            <div class="case opened" aria-label="Koffer {{ case.number }}, € {{ case.amount|format_number }}">
+                                <span class="case-number">€ {{ case.amount|format_number }}</span>
+                            </div>
+                        {% elif game.finished %}
+                            <div class="case closed">
+                                <span class="case-number">{{ "%02d"|format(case.number) }}</span>
+                                <span class="case-caption">Niet geopend</span>
+                            </div>
+                        {% else %}
+                            <form method="post" class="case-form">
+                                <button type="submit" class="case closed" name="case_number" value="{{ case.number }}" aria-label="Open koffer {{ case.number }}">
+                                    <span class="case-number">{{ "%02d"|format(case.number) }}</span>
+                                    <span class="case-caption">Open koffer</span>
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="board-footer">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <span>
+                        {% if game.finished and game.result_type == 'offer' %}
+                            Aanbod aangenomen: <strong>€ {{ game.result|format_number }}</strong>
+                        {% elif game.finished %}
+                            Jouw koffer bevatte: <strong>€ {{ game.result|format_number }}</strong>
+                        {% elif game.player_case %}
+                            Jouw koffer: <strong>nummer {{ game.player_case.number }}</strong>
+                        {% else %}
+                            Selecteer eerst jouw eigen koffer
+                        {% endif %}
+                    </span>
+                </div>
+            </section>
+
+            <aside class="side-panel">
+                <section class="offer-card{% if offer %} offer-active{% endif %}" aria-live="polite">
+                    <p class="eyebrow">De bank biedt</p>
+                    {% if game.finished %}
+                        {% if game.result_type == 'offer' %}
+                            <p class="offer-amount">€ {{ game.result|format_number }}</p>
+                            <p class="offer-note">Aanbod aangenomen. Gefeliciteerd!</p>
+                        {% else %}
+                            <p class="offer-amount">€ {{ game.result|format_number }}</p>
+                            <p class="offer-note">Je hebt de inhoud van jouw koffer gewonnen.</p>
+                        {% endif %}
+                    {% elif offer %}
+                        <div class="panel-heading">
+                            <div>
+                                <p class="offer-amount">€ {{ offer|format_number }}</p>
+                                <p class="offer-note">Huidig bod</p>
+                            </div>
+                            {% if game.offers %}
+                                <div>
+                                    <p class="eyebrow">Eerder geweigerd</p>
+                                    {% for declined_offer in game.offers %}
+                                        <p class="offer-note">€ {{ declined_offer.amount|format_number }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <p class="offer-note">Neem je het aanbod aan?</p>
+                        <form method="post">
+                            <button class="new-game-button" type="submit" name="action" value="accept_offer">Aanbod aannemen</button>
+                            <button class="new-game-button" type="submit" name="action" value="decline_offer">Weigeren en doorgaan</button>
+                        </form>
+                    {% else %}
+                        <p class="offer-pending">Nog even doorspelen</p>
+                        <p class="offer-note">De bank doet een aanbod na de volgende ronde.</p>
+                    {% endif %}
+
+                </section>
+
+                <section class="prize-panel" aria-labelledby="prize-title">
+                    <div class="amounts-grid">
+                        {% for case in game.cases|sort(attribute='amount') %}
+                            <p class="amount{% if case.opened and not case.is_player_case %} amount-opened{% endif %}">
+                                <span class="amount-dot" aria-hidden="true"></span>
+                                € {{ case.amount|format_number }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </section>
+            </aside>
+        </div>
+{% endblock %}

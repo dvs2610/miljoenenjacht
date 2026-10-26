@@ -1,0 +1,459 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+:root {
+    color-scheme: dark;
+    font-family: "DM Sans", "Segoe UI", sans-serif;
+    color: #f5f4ef;
+    background: #071326;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    --gold: #edbd63;
+    --gold-light: #f8dfa4;
+    --muted: #91a0b6;
+    --panel: rgba(16, 33, 57, 0.84);
+    --line: rgba(190, 207, 231, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    background:
+        radial-gradient(ellipse at 50% -20%, rgba(30, 70, 116, 0.52), transparent 56%),
+        radial-gradient(ellipse at 100% 80%, rgba(112, 76, 37, 0.11), transparent 35%),
+        #071326;
+}
+
+button {
+    font: inherit;
+}
+
+.game-page {
+    width: min(1240px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 60px;
+    border-bottom: 1px solid var(--line);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    color: #f8f6f0;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    text-decoration: none;
+}
+
+.brand-mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid rgba(237, 189, 99, 0.58);
+    border-radius: 11px;
+    color: var(--gold-light);
+    font-size: 17px;
+}
+
+.brand-accent {
+    color: var(--gold);
+}
+
+.topbar form {
+    margin: 0;
+}
+
+.new-game-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid rgba(190, 207, 231, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.035);
+    color: #e7edf6;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.new-game-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(237, 189, 99, 0.6);
+    background: rgba(237, 189, 99, 0.08);
+}
+
+.new-game-button span {
+    color: var(--gold);
+    font-size: 18px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.intro h1,
+.panel-heading h2,
+.prize-heading h2 {
+    margin: 0;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+}
+
+.game-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.85fr);
+    align-items: start;
+    gap: 22px;
+    padding-top: 1rem;
+}
+
+.board-panel,
+.prize-panel {
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--panel);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
+}
+
+.board-panel {
+    padding: 24px;
+}
+
+.panel-heading,
+.prize-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.panel-heading {
+    margin-bottom: 20px;
+}
+
+.panel-heading .eyebrow,
+.prize-heading .eyebrow {
+    margin-bottom: 4px;
+}
+
+.panel-heading h2,
+.prize-heading h2 {
+    font-size: 17px;
+    letter-spacing: -0.025em;
+}
+
+.round-count,
+.prize-count {
+    flex: 0 0 auto;
+    color: var(--gold-light);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.round-count span {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.case-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.case-form {
+    min-width: 0;
+    margin: 0;
+}
+
+.case {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 78px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(237, 189, 99, 0.38);
+    border-radius: 12px;
+    background: linear-gradient(145deg, #18365b, #102744);
+    color: #fff;
+    text-align: center;
+}
+
+button.case {
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+button.case:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    background: linear-gradient(145deg, #224875, #153252);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24), 0 0 18px rgba(237, 189, 99, 0.1);
+}
+
+button.case:focus-visible,
+.new-game-button:focus-visible,
+.brand:focus-visible {
+    outline: 2px solid var(--gold-light);
+    outline-offset: 3px;
+}
+
+.case-number {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+
+.case-caption {
+    color: rgba(236, 241, 249, 0.63);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.case.opened {
+    border-color: rgba(177, 190, 208, 0.13);
+    background: linear-gradient(145deg, #18263a, #111c2d);
+    color: #9caabd;
+}
+
+.case.opened .case-number {
+    font-size: 14px;
+}
+
+.case.picked {
+    border-color: rgba(237, 189, 99, 0.8);
+    background: linear-gradient(145deg, #604b2b, #392e20);
+    color: var(--gold-light);
+    box-shadow: inset 0 0 24px rgba(237, 189, 99, 0.08);
+}
+
+.case.picked .case-caption {
+    color: #e6c987;
+}
+
+.board-footer {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 18px;
+    padding-top: 15px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.board-footer strong {
+    color: #e9edf4;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px rgba(237, 189, 99, 0.55);
+}
+
+.side-panel {
+    display: grid;
+    gap: 16px;
+}
+
+.offer-card {
+    min-height: 148px;
+    padding: 21px 22px;
+    border: 1px solid rgba(237, 189, 99, 0.23);
+    border-radius: 18px;
+    background:
+        radial-gradient(ellipse at 100% 0, rgba(237, 189, 99, 0.12), transparent 55%),
+        linear-gradient(145deg, #172b46, #102039);
+}
+
+.offer-card .eyebrow {
+    color: #d8b567;
+}
+
+.offer-amount {
+    margin: 10px 0 4px;
+    color: var(--gold-light);
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    font-size: clamp(28px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.055em;
+}
+
+.offer-pending {
+    margin: 20px 0 4px;
+    color: #f2eee4;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.offer-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.offer-active {
+    border-color: rgba(237, 189, 99, 0.48);
+    box-shadow: 0 0 28px rgba(237, 189, 99, 0.07);
+}
+
+.prize-panel {
+    padding: 19px 20px 17px;
+}
+
+.prize-heading {
+    margin-bottom: 14px;
+}
+
+.prize-count {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.amounts-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(10, auto);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 18px;
+}
+
+.amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 5px 0;
+    color: #dce3ed;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    transition: color 160ms ease;
+}
+
+.amount-dot {
+    width: 5px;
+    height: 5px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--gold);
+}
+
+.amount-opened {
+    color: #657287;
+    text-decoration: line-through;
+    text-decoration-color: #738097;
+}
+
+.amount-opened .amount-dot {
+    background: #4e5c70;
+}
+
+@media (max-width: 850px) {
+    .game-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side-panel {
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        align-items: stretch;
+    }
+
+    .offer-card {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .game-page {
+        width: min(100% - 28px, 440px);
+    }
+
+    .board-panel {
+        padding: 16px;
+        border-radius: 15px;
+    }
+
+    .panel-heading h2 {
+        font-size: 15px;
+    }
+
+    .case-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .case {
+        min-height: 68px;
+        border-radius: 10px;
+    }
+
+    .case-number {
+        font-size: 18px;
+    }
+
+    .case.opened .case-number {
+        font-size: 12px;
+    }
+
+    .case-caption {
+        font-size: 8px;
+    }
+
+    .side-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .amounts-grid {
+        column-gap: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
