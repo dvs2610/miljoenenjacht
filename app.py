@@ -19,7 +19,6 @@ def format_number(value):
 AMOUNTS = [1, 5, 10, 20, 50, 100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 200000, 300000, 400000, 500000, 750000, 1000000]
 
 
-
 class Game:
     def __init__(self):
         self.player_case = None
@@ -43,7 +42,6 @@ class Case:
 def create_new_game():
     amounts = AMOUNTS.copy()
     shuffle(amounts)
-    print(amounts) #REMOVE
 
     game = Game()
 
