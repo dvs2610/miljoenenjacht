@@ -41,7 +41,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 86px;
+    min-height: 60px;
     border-bottom: 1px solid var(--line);
 }
 
@@ -103,11 +103,6 @@ button {
     font-size: 18px;
 }
 
-.intro {
-    padding: 42px 0 32px;
-    text-align: center;
-}
-
 .eyebrow {
     margin: 0 0 8px;
     color: var(--gold);
@@ -126,26 +121,12 @@ button {
     letter-spacing: -0.045em;
 }
 
-.intro h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    line-height: 1.2;
-}
-
-.intro h1 span {
-    color: var(--gold-light);
-}
-
-.intro-copy {
-    margin: 10px 0 0;
-    color: var(--muted);
-    font-size: 14px;
-}
-
 .game-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.85fr);
     align-items: start;
     gap: 22px;
+    padding-top: 1rem;
 }
 
 .board-panel,
@@ -406,15 +387,6 @@ button.case:focus-visible,
     background: #4e5c70;
 }
 
-.page-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 22px 2px 28px;
-    color: #66758a;
-    font-size: 11px;
-}
-
 @media (max-width: 850px) {
     .game-layout {
         grid-template-columns: 1fr;
@@ -433,21 +405,6 @@ button.case:focus-visible,
 @media (max-width: 560px) {
     .game-page {
         width: min(100% - 28px, 440px);
-    }
-
-    .topbar {
-        min-height: 70px;
-    }
-
-    .intro {
-        padding: 34px 0 25px;
-    }
-
-    .intro-copy {
-        max-width: 320px;
-        margin-right: auto;
-        margin-left: auto;
-        line-height: 1.5;
     }
 
     .board-panel {
@@ -487,10 +444,6 @@ button.case:focus-visible,
 
     .amounts-grid {
         column-gap: 12px;
-    }
-
-    .page-footer {
-        font-size: 10px;
     }
 }
 

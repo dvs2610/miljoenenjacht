@@ -103,6 +103,10 @@ def index():
                 game.result_type = 'offer'
                 game.offer = None
             elif action == 'decline_offer' and game.offer is not None:
+                game.offers.append({
+                    'round': game.num_opened,
+                    'amount': game.offer,
+                })
                 game.offer = None
                 game.offer_round = game.num_opened
             elif action is None and game.offer is None:
